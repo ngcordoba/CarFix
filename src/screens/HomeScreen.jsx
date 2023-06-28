@@ -5,11 +5,8 @@ import { loadRepairs } from '../store/fix.actions'
 
 
 const HomeScreen = ({ navigation }) => {
-    const dispatch = useDispatch();
 
     const handleLoadRepair = () => {
-        const repair = { /* Aquí puedes ingresar los datos del arreglo de vehículo */ };
-        dispatch(loadRepairs(repair));
         navigation.navigate('CreateRepair');
     };
 

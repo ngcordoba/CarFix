@@ -5,7 +5,6 @@ import { openDatabase } from '../../db/database';
 const RepairsScreen = () => {
     const [repairs, setRepairs] = useState([]);
 
-
     useEffect(() => {
         const fetchRepairs = async () => {
             try {
@@ -39,9 +38,12 @@ const RepairsScreen = () => {
     const renderItem = ({ item }) => {
         return (
             <View>
-                <Image source={item.locationImage} style={{ width: 60, height: 60, backgroundColor: "black" }} />
-                <Text>{item.description}</Text>
-                <Text>{`${item.location.street}, ${item.location.number}`}</Text>
+                <Image source={item.locationImage} style={{ width: 120, height: 120, borderColor: "black" }} />
+                <Text>Vehiculo: {item.vehicle}</Text>
+                <Text>Descripción: {item.description}</Text>
+                <Text>Costo: ${item.cost}</Text>
+                <Text>Ubicación: {item.location}</Text>
+                <Text>Fecha: {item.date}</Text>
             </View>
         );
     };

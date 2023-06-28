@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { addRepair, loadRepair } from '../store/fix.actions';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
+import Map from '../../constants/Map'
+import getAddress from '../../components/geocoding'
 
 const CreateRepairScreen = ({ navigation }) => {
     const [repairData, setRepairData] = useState({
@@ -14,11 +17,24 @@ const CreateRepairScreen = ({ navigation }) => {
         mechanic: '',
         location: '',
     });
+
+    const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const dispatch = useDispatch();
 
     const handleSaveRepair = () => {
         dispatch(addRepair(repairData));
-        navigation.goBack(); // Vuelve a la pantalla anterior después de guardar
+        navigation.goBack();
+
+        console.log(repairData);
+
+        setRepairData({
+            vehicle: '',
+            date: '',
+            description: '',
+            cost: '',
+            mechanic: '',
+            location: '',
+        });
     };
 
     const [location, setLocation] = useState(null);
@@ -27,14 +43,36 @@ const CreateRepairScreen = ({ navigation }) => {
         (async () => {
             let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                // Manejo de permisos denegados
                 return;
             }
 
             let location = await Location.getCurrentPositionAsync({});
             setLocation(location);
+            if (location) {
+                const apiKey = Map.API_KEY;
+                const formattedAddress = await getAddress(
+                    location.coords.latitude,
+                    location.coords.longitude,
+                    apiKey
+                );
+                setRepairData({ ...repairData, location: formattedAddress });
+            }
         })();
     }, []);
+
+    const showDatePicker = () => {
+        setDatePickerVisible(true);
+    };
+
+    const hideDatePicker = () => {
+        setDatePickerVisible(false);
+    };
+
+    const handleDateConfirm = (date) => {
+        const formattedDate = date.toLocaleDateString('es-ES');
+        setRepairData({ ...repairData, date: formattedDate });
+        hideDatePicker();
+    };
 
     return (
         <View>
@@ -42,12 +80,18 @@ const CreateRepairScreen = ({ navigation }) => {
             <TextInput
                 placeholder="Vehículo"
                 value={repairData.vehicle}
+                format="DD/MM/YYYY"
                 onChangeText={(text) => setRepairData({ ...repairData, vehicle: text })}
             />
-            <TextInput
-                placeholder="Fecha"
-                value={repairData.date}
-                onChangeText={(text) => setRepairData({ ...repairData, date: text })}
+            <TouchableOpacity onPress={showDatePicker}>
+                <Text>{repairData.date ? repairData.date : 'Seleccionar fecha'}</Text>
+            </TouchableOpacity>
+
+            <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="date"
+                onConfirm={handleDateConfirm}
+                onCancel={hideDatePicker}
             />
             <TextInput
                 placeholder="Descripción"
@@ -64,7 +108,7 @@ const CreateRepairScreen = ({ navigation }) => {
                 value={repairData.mechanic}
                 onChangeText={(text) => setRepairData({ ...repairData, mechanic: text })}
             />
-            <Button title="Guardar" onPress={handleSaveRepair} />
+
 
             <View style={{ height: 200, width: 400, marginVertical: 30 }}>
                 {location && (
@@ -73,8 +117,8 @@ const CreateRepairScreen = ({ navigation }) => {
                         initialRegion={{
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
-                            latitudeDelta: 0.0922,
-                            longitudeDelta: 0.0421,
+                            latitudeDelta: 0.01,
+                            longitudeDelta: 0.01,
                         }}
                     >
                         <Marker
@@ -87,6 +131,7 @@ const CreateRepairScreen = ({ navigation }) => {
                     </MapView>
                 )}
             </View>
+            <Button title="Guardar" onPress={handleSaveRepair} />
         </View>
     );
 };
