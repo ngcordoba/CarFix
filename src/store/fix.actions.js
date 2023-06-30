@@ -1,4 +1,4 @@
-import { openDatabase } from '../../db/database';
+import { openDatabase } from '../db/database';
 
 export const loadRepairs = (repair) => {
     return {
@@ -15,7 +15,7 @@ export const addRepair = (repairData) => {
 
             db.transaction((tx) => {
                 tx.executeSql(
-                    'INSERT INTO repairs (vehicle, date, description, cost, mechanic, location) VALUES (?, ?, ?, ?, ?, ?)',
+                    'INSERT INTO repairs (vehicle, date, description, cost, mechanic, location, kilometres) VALUES (?, ?, ?, ?, ?, ?, ?)',
                     [
                         repairData.vehicle,
                         repairData.date,
@@ -23,6 +23,7 @@ export const addRepair = (repairData) => {
                         repairData.cost,
                         repairData.mechanic,
                         repairData.location,
+                        repairData.kilometres
                     ],
                     (_, { insertId }) => {
 

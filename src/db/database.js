@@ -6,7 +6,7 @@ export const openDatabase = () => {
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                'CREATE TABLE IF NOT EXISTS repairs (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicle TEXT, date TEXT, description TEXT, cost REAL, mechanic TEXT, location TEXT)',
+                'CREATE TABLE IF NOT EXISTS repairs (id INTEGER PRIMARY KEY AUTOINCREMENT, vehicle TEXT, date TEXT, description TEXT, cost REAL, mechanic TEXT, location TEXT, kilometres REAL)',
                 [],
                 () => {
                     resolve(db);
@@ -20,14 +20,14 @@ export const openDatabase = () => {
 };
 
 export const addRepair = (repair) => {
-    const { vehicle, date, description, cost, mechanic, location } = repair;
+    const { vehicle, date, description, cost, mechanic, location, kilometres } = repair;
 
     return new Promise((resolve, reject) => {
         db.transaction((tx) => {
             tx.executeSql(
-                `INSERT INTO repairs (vehicle, date, description, cost, mechanic, location)
-         VALUES (?, ?, ?, ?, ?, ?)`,
-                [vehicle, date, description, cost, mechanic, location],
+                `INSERT INTO repairs (vehicle, date, description, cost, mechanic, location, kilometres)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [vehicle, date, description, cost, mechanic, location, kilometres],
                 (_, { insertId }) => {
                     resolve(insertId);
                 },

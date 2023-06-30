@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { openDatabase } from './db/database';
+import { openDatabase } from './src/db/database';
 import configureStore from './src/store';
 import Navigation from './src/navigation/Navigation';
 

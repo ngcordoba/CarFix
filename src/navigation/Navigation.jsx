@@ -4,8 +4,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons'
 
 import HomeScreen from '../screens/HomeScreen';
-import RepairsScreen from '../screens/RepairsScreen';
+import RepairsScreen from '../screens/RepairScreen';
 import CreateRepairScreen from '../screens/CreateRepairScreen';
+import DetailRepairScreen from '../screens/DetailRepairScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -40,11 +41,19 @@ const Navigation = () => {
                     name="Repairs"
                     component={RepairsScreen}
                     options={{
+                        headerShown: false,
                         title: "Mis Reparaciones",
                         tabBarIcon: ({ color }) => (
                             <Ionicons name="build" size={20} color={color} />
                         ),
                     }}
+
+                />
+
+                <Tab.Screen
+                    name="DetailsRepair"
+                    component={DetailRepairScreen}
+                    options={{ tabBarButton: () => null, tabBarVisible: false, headerShown: false }}
 
                 />
             </Tab.Navigator>

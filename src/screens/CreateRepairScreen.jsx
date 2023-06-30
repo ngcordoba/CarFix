@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
-import { addRepair, loadRepair } from '../store/fix.actions';
+import { addRepair, loadRepairs } from '../store/fix.actions';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import getAddress from '../../src/components/geocoding';
+import getAddress from '../components/GeoFormat';
 
 import Button from '../components/Button';
 import ImagenBackground from '../components/ImagenBackground';
@@ -18,6 +18,7 @@ const CreateRepairScreen = ({ navigation }) => {
         cost: '',
         mechanic: '',
         location: '',
+        kilometres: '',
     });
 
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
@@ -30,7 +31,7 @@ const CreateRepairScreen = ({ navigation }) => {
             navigation.goBack();
 
             console.log(repairData);
-            Alert.alert('Reparación guardada ✅', 'Tu reparación ha sido guardada exitosamente!.');
+            Alert.alert('Reparación guardada ✅', 'Tu reparación ha sido guardada exitosamente!');
 
             setRepairData({
                 vehicle: '',
@@ -39,6 +40,7 @@ const CreateRepairScreen = ({ navigation }) => {
                 cost: '',
                 mechanic: '',
                 location: '',
+                kilometres: '',
             });
         } else {
             Alert.alert('Campos incompletos', 'Por favor completa todos los campos y agrega una fecha.');
@@ -82,7 +84,6 @@ const CreateRepairScreen = ({ navigation }) => {
         hideDatePicker();
     };
 
-
     const validateForm = () => {
         const { vehicle, date, description, cost, location } = repairData;
         const isValid = vehicle && date && description && cost && location;
@@ -92,7 +93,6 @@ const CreateRepairScreen = ({ navigation }) => {
     useEffect(() => {
         validateForm();
     }, [repairData]);
-
 
     return (
         <View style={styles.container}>
@@ -110,26 +110,42 @@ const CreateRepairScreen = ({ navigation }) => {
                     }}
                 />
 
-                <Text>Costo</Text>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Costo de la reparación"
-                    value={repairData.cost}
-                    onChangeText={(text) => {
-                        setRepairData({ ...repairData, cost: text })
-                        validateForm();
-                    }}
-                />
+                <View style={styles.inlineFields}>
+                    <View style={styles.inlineField}>
+                        <Text>Costo</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Costo de la reparación"
+                            value={repairData.cost}
+                            keyboardType="numeric"
+                            onChangeText={(text) => {
+                                setRepairData({ ...repairData, cost: text });
+                                validateForm();
+                            }}
+                        />
+                    </View>
+
+                    <View style={styles.inlineField}>
+                        <Text>Kilometraje</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Kilometraje actual"
+                            value={repairData.kilometres}
+                            keyboardType="numeric"
+                            onChangeText={(text) => {
+                                setRepairData({ ...repairData, kilometres: text });
+                                validateForm();
+                            }}
+                        />
+                    </View>
+                </View>
 
                 <Text>Taller Mecánico</Text>
                 <TextInput
                     style={styles.input}
                     placeholder="Nombre del taller"
                     value={repairData.mechanic}
-                    onChangeText={(text) =>
-                        setRepairData({ ...repairData, mechanic: text })
-
-                    }
+                    onChangeText={(text) => setRepairData({ ...repairData, mechanic: text })}
                 />
 
                 <Text>Descripción</Text>
@@ -138,7 +154,7 @@ const CreateRepairScreen = ({ navigation }) => {
                     placeholder="Ej: Frenos y filtros"
                     value={repairData.description}
                     onChangeText={(text) => {
-                        setRepairData({ ...repairData, description: text })
+                        setRepairData({ ...repairData, description: text });
                         validateForm();
                     }}
                 />
@@ -154,7 +170,6 @@ const CreateRepairScreen = ({ navigation }) => {
                     onCancel={hideDatePicker}
                 />
             </View>
-
 
             {location && (
                 <View style={styles.mapContainer}>
@@ -179,10 +194,7 @@ const CreateRepairScreen = ({ navigation }) => {
                 </View>
             )}
 
-            <Button
-                onPress={handleSaveRepair}
-                text={"Guardar datos"}>
-            </Button>
+            <Button onPress={handleSaveRepair} text="Guardar datos" />
         </View>
     );
 };
@@ -199,15 +211,15 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         fontWeight: 'bold',
-        marginBottom: "10%",
-        color: "white"
+        marginBottom: '10%',
+        color: 'white',
     },
     inputContainer: {
         width: windowWidth * 0.8,
         padding: 10,
         borderRadius: 8,
         marginBottom: 10,
-        marginTop: "10%",
+        marginTop: '10%',
     },
     input: {
         width: '100%',
@@ -221,14 +233,12 @@ const styles = StyleSheet.create({
     textFecha: {
         fontWeight: 'bold',
         textAlign: 'center',
-        color: "#ff1700",
+        color: '#ff1700',
     },
-
     textUbi: {
-        alignSelf: "center",
-        color: "white"
+        alignSelf: 'center',
+        color: 'white',
     },
-
     mapContainer: {
         width: windowWidth * 0.8,
         height: windowWidth * 0.5,
@@ -238,6 +248,14 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+    },
+    inlineFields: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    inlineField: {
+        flex: 1,
+        marginRight: 10,
     },
 });
 

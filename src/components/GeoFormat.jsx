@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Map from '../../constants/Map'
+import Map from '../constants/Map'
 
 const getAddress = async (latitude, longitude) => {
   try {
