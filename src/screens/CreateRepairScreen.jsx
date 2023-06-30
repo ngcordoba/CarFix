@@ -6,7 +6,7 @@ import { addRepair, loadRepair } from '../store/fix.actions';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
 import Map from '../../constants/Map'
-import getAddress from '../../components/geocoding'
+import getAddress from '../../src/components/geocoding'
 
 const CreateRepairScreen = ({ navigation }) => {
     const [repairData, setRepairData] = useState({
