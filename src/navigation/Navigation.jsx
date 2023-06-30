@@ -34,7 +34,7 @@ const Navigation = () => {
 
                 />
                 <Tab.Screen name="CreateRepair" component={CreateRepairScreen}
-                    options={{ tabBarButton: () => null, tabBarVisible: false, title: "Cargar reparación" }} />
+                    options={{ tabBarButton: () => null, tabBarVisible: false, headerShown: false }} />
 
                 <Tab.Screen
                     name="Repairs"

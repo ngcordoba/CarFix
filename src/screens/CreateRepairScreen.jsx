@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Alert } from 'react-native';
 import { useDispatch } from 'react-redux';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import { addRepair, loadRepair } from '../store/fix.actions';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import * as Location from 'expo-location';
 import MapView, { Marker } from 'react-native-maps';
-import Map from '../../constants/Map'
-import getAddress from '../../src/components/geocoding'
+import getAddress from '../../src/components/geocoding';
+
+import Button from '../components/Button';
+import ImagenBackground from '../components/ImagenBackground';
 
 const CreateRepairScreen = ({ navigation }) => {
     const [repairData, setRepairData] = useState({
@@ -20,21 +22,27 @@ const CreateRepairScreen = ({ navigation }) => {
 
     const [isDatePickerVisible, setDatePickerVisible] = useState(false);
     const dispatch = useDispatch();
+    const [isFormValid, setFormValid] = useState(false);
 
     const handleSaveRepair = () => {
-        dispatch(addRepair(repairData));
-        navigation.goBack();
+        if (isFormValid) {
+            dispatch(addRepair(repairData));
+            navigation.goBack();
 
-        console.log(repairData);
+            console.log(repairData);
+            Alert.alert('Reparación guardada ✅', 'Tu reparación ha sido guardada exitosamente!.');
 
-        setRepairData({
-            vehicle: '',
-            date: '',
-            description: '',
-            cost: '',
-            mechanic: '',
-            location: '',
-        });
+            setRepairData({
+                vehicle: '',
+                date: '',
+                description: '',
+                cost: '',
+                mechanic: '',
+                location: '',
+            });
+        } else {
+            Alert.alert('Campos incompletos', 'Por favor completa todos los campos y agrega una fecha.');
+        }
     };
 
     const [location, setLocation] = useState(null);
@@ -74,46 +82,84 @@ const CreateRepairScreen = ({ navigation }) => {
         hideDatePicker();
     };
 
+
+    const validateForm = () => {
+        const { vehicle, date, description, cost, location } = repairData;
+        const isValid = vehicle && date && description && cost && location;
+        setFormValid(isValid);
+    };
+
+    useEffect(() => {
+        validateForm();
+    }, [repairData]);
+
+
     return (
-        <View>
-            <Text>Crear arreglo de vehículo:</Text>
-            <TextInput
-                placeholder="Vehículo"
-                value={repairData.vehicle}
-                format="DD/MM/YYYY"
-                onChangeText={(text) => setRepairData({ ...repairData, vehicle: text })}
-            />
-            <TouchableOpacity onPress={showDatePicker}>
-                <Text>{repairData.date ? repairData.date : 'Seleccionar fecha'}</Text>
-            </TouchableOpacity>
+        <View style={styles.container}>
+            <ImagenBackground />
+            <View style={styles.inputContainer}>
+                <Text style={styles.title}>Cargá los datos de tu vehiculo</Text>
+                <Text>Marca y modelo</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Ej: Ford Fiesta Kinetic"
+                    value={repairData.vehicle}
+                    onChangeText={(text) => {
+                        setRepairData({ ...repairData, vehicle: text });
+                        validateForm();
+                    }}
+                />
 
-            <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="date"
-                onConfirm={handleDateConfirm}
-                onCancel={hideDatePicker}
-            />
-            <TextInput
-                placeholder="Descripción"
-                value={repairData.description}
-                onChangeText={(text) => setRepairData({ ...repairData, description: text })}
-            />
-            <TextInput
-                placeholder="Costo"
-                value={repairData.cost}
-                onChangeText={(text) => setRepairData({ ...repairData, cost: text })}
-            />
-            <TextInput
-                placeholder="Mecánico"
-                value={repairData.mechanic}
-                onChangeText={(text) => setRepairData({ ...repairData, mechanic: text })}
-            />
+                <Text>Costo</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Costo de la reparación"
+                    value={repairData.cost}
+                    onChangeText={(text) => {
+                        setRepairData({ ...repairData, cost: text })
+                        validateForm();
+                    }}
+                />
+
+                <Text>Taller Mecánico</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Nombre del taller"
+                    value={repairData.mechanic}
+                    onChangeText={(text) =>
+                        setRepairData({ ...repairData, mechanic: text })
+
+                    }
+                />
+
+                <Text>Descripción</Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Ej: Frenos y filtros"
+                    value={repairData.description}
+                    onChangeText={(text) => {
+                        setRepairData({ ...repairData, description: text })
+                        validateForm();
+                    }}
+                />
+
+                <TouchableOpacity onPress={showDatePicker}>
+                    <Text style={styles.textFecha}>{repairData.date ? repairData.date : 'Cargar una fecha'}</Text>
+                </TouchableOpacity>
+
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleDateConfirm}
+                    onCancel={hideDatePicker}
+                />
+            </View>
 
 
-            <View style={{ height: 200, width: 400, marginVertical: 30 }}>
-                {location && (
+            {location && (
+                <View style={styles.mapContainer}>
                     <MapView
-                        style={{ flex: 1 }}
+                        style={styles.map}
                         initialRegion={{
                             latitude: location.coords.latitude,
                             longitude: location.coords.longitude,
@@ -129,11 +175,70 @@ const CreateRepairScreen = ({ navigation }) => {
                             title="Ubicación actual"
                         />
                     </MapView>
-                )}
-            </View>
-            <Button title="Guardar" onPress={handleSaveRepair} />
+                    <Text style={styles.textUbi}>*Ubicación del taller mecánico</Text>
+                </View>
+            )}
+
+            <Button
+                onPress={handleSaveRepair}
+                text={"Guardar datos"}>
+            </Button>
         </View>
     );
 };
+
+const windowWidth = Dimensions.get('window').width;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 20,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        marginBottom: "10%",
+        color: "white"
+    },
+    inputContainer: {
+        width: windowWidth * 0.8,
+        padding: 10,
+        borderRadius: 8,
+        marginBottom: 10,
+        marginTop: "10%",
+    },
+    input: {
+        width: '100%',
+        height: 40,
+        backgroundColor: 'white',
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        marginTop: 2,
+        marginBottom: 10,
+    },
+    textFecha: {
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: "#ff1700",
+    },
+
+    textUbi: {
+        alignSelf: "center",
+        color: "white"
+    },
+
+    mapContainer: {
+        width: windowWidth * 0.8,
+        height: windowWidth * 0.5,
+        borderRadius: 8,
+        overflow: 'hidden',
+        marginBottom: 15,
+    },
+    map: {
+        flex: 1,
+    },
+});
 
 export default CreateRepairScreen;

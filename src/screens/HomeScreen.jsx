@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import { StyleSheet } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+
+import Button from '../components/Button';
 import ImagenBackground from '../components/ImagenBackground'
 
 
@@ -24,11 +25,10 @@ const HomeScreen = ({ navigation }) => {
 
                 <View style={styles.buttonContainer}>
 
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={handleLoadRepair}>
-                        <Text style={styles.buttonText}> Registrar un arreglo </Text>
-                    </TouchableOpacity>
+                    <Button
+                        onPress={handleLoadRepair}
+                        text={"Registrar un arreglo"}>
+                    </Button>
 
                 </View>
 
@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         color: 'white',
         fontSize: 40,
         textAlign: "center",
+        fontWeight: 'bold',
     },
 
     subtitle: {
