@@ -7,6 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import RepairsScreen from '../screens/RepairScreen';
 import CreateRepairScreen from '../screens/CreateRepairScreen';
 import DetailRepairScreen from '../screens/DetailRepairScreen';
+// import SingInLogInScreen from '../screens/SingInLogInScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -56,6 +57,10 @@ const Navigation = () => {
                     options={{ tabBarButton: () => null, tabBarVisible: false, headerShown: false }}
 
                 />
+
+
+
+
             </Tab.Navigator>
         </NavigationContainer>
     );

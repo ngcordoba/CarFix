@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     textFecha: {
         fontWeight: 'bold',
         textAlign: 'center',
-        color: '#ff1700',
+        color: 'white',
     },
     textUbi: {
         alignSelf: 'center',

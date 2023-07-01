@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, SafeAreaView, Image, } from 'react-native'
 import React from 'react'
-import { Ionicons } from '@expo/vector-icons'
 import ImagenBackground from '../components/ImagenBackground'
 
 const DetailRepairScreen = ({ route }) => {
@@ -25,12 +24,6 @@ const DetailRepairScreen = ({ route }) => {
                 <Text style={styles.label}>Kilometraje: {kilometres}</Text>
                 <Text style={styles.label}>Descripcion: {description} </Text>
 
-                <View style={styles.buttonContainer}>
-
-                </View>
-
-
-
             </View>
         </SafeAreaView>
     )
@@ -51,7 +44,7 @@ const styles = StyleSheet.create({
 
     detailsContainer: {
         height: '50%',
-        width: '80%',
+        width: '90%',
         backgroundColor: 'rgba(255, 255, 255, 0.6)',
         alignSelf: "center",
         borderRadius: 15,
@@ -59,8 +52,8 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        maxWidth: "90%",
-        height: "10%",
+        maxWidth: "100%",
+        maxHeight: "9%",
         fontSize: 15,
         marginVertical: 5,
         margin: "5%",
