@@ -159,8 +159,8 @@ const CreateRepairScreen = ({ navigation }) => {
                     }}
                 />
 
-                <TouchableOpacity onPress={showDatePicker}>
-                    <Text style={styles.textFecha}>{repairData.date ? repairData.date : 'Cargar una fecha'}</Text>
+                <TouchableOpacity style={styles.dateButton} onPress={showDatePicker}>
+                    <Text style={styles.textFecha}>{repairData.date ? repairData.date : 'Cargar fecha'}</Text>
                 </TouchableOpacity>
 
                 <DateTimePickerModal
@@ -229,6 +229,15 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         marginTop: 2,
         marginBottom: 10,
+    },
+
+    dateButton: {
+        backgroundColor: "#ff1700",
+        width: 150,
+        height: 30,
+        borderRadius: 10,
+        justifyContent: "center",
+        alignSelf: "center"
     },
     textFecha: {
         fontWeight: 'bold',
