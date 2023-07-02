@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CarFix",
-    "slug": "CarFix",
+    "slug": "carfixapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -25,12 +25,25 @@
         "ACCESS_FINE_LOCATION"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.gabrielncordoba.carfixapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e89344e5-e0f1-4f20-ab74-b79cc53e08a3"
+      }
+    },
+    "owner": "gabrielncordoba",
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/e89344e5-e0f1-4f20-ab74-b79cc53e08a3"
     }
   }
 }
