@@ -16,7 +16,7 @@
 #### 🔒 Persistencia de datos (SQLite).
 
 
-# 🖼 Imágenes:  
+# 📁 Imágenes:  
 
 ## Inicio
 ![Inicio](https://i.postimg.cc/RVrrpNHN/Inicio.jpg) 
