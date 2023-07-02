@@ -7,6 +7,7 @@
 
 ####  Carfix es una pequeña aplicación que permite registrar los arreglos de nuestro vehiculo y llevar un control de los mismos. La idea es que la carga sea en el momento del arreglo, para especificar detalles y guardar información precisa.  
 
+### Aspectos incluidos:
 #### 🖇️ Componentes reutilizables.  
 #### 💡 Listas optimizadas. 
 #### 🔍 Navegación. 
