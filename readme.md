@@ -6,7 +6,7 @@
 ## Sobre este desafio: 
 
 ####  Carfix es una pequeña aplicación que permite registrar los arreglos de nuestro vehiculo y almacenarlos en nuestro dispositivo. El objetivo es mantener ordenados y actualizados los mantenimientos de nuestros vehiculos, con la posibilidad de registrar datos de referencia importantes como el kilometraje, el detalle del arreglo y la ubicación del taller en donde arreglamos nuestro auto. 
-Es una aplicación desarrollada en React Native con Expo, multiplataforma, aunque al momento del desarrollo fue testeada desde un dispositivo IOS. También se implementó una integración con API (Google Maps), Redux y SQLite entre otros aspectos. 
+#### Es una aplicación desarrollada en React Native con Expo, multiplataforma, aunque al momento del desarrollo fue testeada desde un dispositivo IOS. También se implementó una integración con API (Google Maps), Redux y SQLite entre otros aspectos. 
 
 ### Aspectos incluidos:
 #### 🖇️ Componentes reutilizables.  
